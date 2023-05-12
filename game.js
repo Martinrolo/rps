@@ -9,42 +9,32 @@ function getComputerChoice() {
     }
 }   
 
-let playerScore = 0
-let computerScore = 0
-
 function playRound(playerSelection, computerSelection) {
     playerSelection = playerSelection.toUpperCase()
-    computerSelection = getComputerChoice()
     if (playerSelection == computerSelection) {
         return "It is a tie!";
     }
     else {
-        if (playerSelection == "ROCK") {
+        if (playerSelection === "ROCK") {
             if (computerSelection == "PAPER") {
-                computerScore = ++ computerScore;
-                return "You lose! Paper beats rock";
+                return "computer";
             }
             else {
-                playerScore = ++ playerScore;
-                return "You win! Rock beats scissors";
+                return "player";
             }
         } else if (playerSelection == "PAPER") {
             if (computerSelection == "SCISSORS") {
-                computerScore = ++ computerScore;
-                return "You lose! Scissors beats paper";
+                return "computer";
             }
             else {
-                playerScore = ++ playerScore;
-                return "You win! Paper beats rock";
+                return "player";
             }
         } else if (playerSelection == "SCISSORS"){
             if (computerSelection == "ROCK") {
-                computerScore = ++ computerScore;
-                return "You lose! Rock beats scissors";
+                return "computer";
             }
             else {
-                playerScore = ++ playerScore;
-                return "You win! Scissors beats paper";
+                return "player";
             }
         } else {
             return "wtf did you write? Try again."
@@ -52,12 +42,51 @@ function playRound(playerSelection, computerSelection) {
     }
 }
 
-function game() {
-    while (playerScore !== 5) {
-        let userInput = prompt("Rock, paper, scissors?")
-        console.log(playRound(userInput, getComputerChoice()))
-    }
-}
+//create game depending on button clicked
+const btnRock = document.querySelector('#btn-rock');
+const btnPaper = document.querySelector('#btn-paper');
+const btnScissors = document.querySelector('#btn-scissors');
 
+//game function with 5 rounds
+function game() {
+    let playerScore = 0;
+    let computerScore = 0
+
+    //create score board
+    const scoreDiv = document.createElement('div')
+    scoreDiv.classList.add('scores')
+    scoreDiv.style.color = 'blue'; 
+    scoreDiv.textContent = `Computer ${computerScore} player ${playerScore}`;
+    results.appendChild(scoreDiv);
+
+    function updateScore(winner) {
+        if (winner === 'player') {
+            playerScore++;
+          } else if (winner === 'computer') {
+            computerScore++;
+          }
+          scoreDiv.textContent = `Computer ${computerScore} player ${playerScore}`;
+          if (playerScore === 5) {
+                alert('Player wins!');
+          } else if (computerScore === 5) {
+                alert('Computer wins!');
+          } if (playerScore === 5 || computerScore === 5) {
+                playerScore = 0
+                computerScore = 0
+          }
+        }
+
+        btnRock.addEventListener('click', () => {
+            updateScore(playRound("rock", getComputerChoice()));
+        });
+          
+        btnPaper.addEventListener('click', () => {
+            updateScore(playRound("paper", getComputerChoice()));
+        });
+          
+        btnScissors.addEventListener('click', () => {
+            updateScore(playRound("scissors", getComputerChoice()));
+        });
+        }
+  
 game()
-console.log("Congrats! You won.")
